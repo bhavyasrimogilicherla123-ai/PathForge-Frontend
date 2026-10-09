@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PathForge – Student Career Guidance Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
+        <div class="container">
+            <a class="navbar-brand" href="/"><i class="bi bi-cpu-fill me-2"></i>PATHFORGE</a>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item"><a class="nav-link active" href="/dashboard.html">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/roadmap.html">Roadmap</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/assessment.html">Assessment</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/projects.html">Projects</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/youtube.html">YouTube Analyzer</a></li>
+                </ul>
+                <div id="navUserContainer" class="d-flex align-items-center"></div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container py-4">
+        <!-- Header Banner -->
+        <div class="pf-card mb-4">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <span id="targetCareerBadge" class="badge bg-primary bg-opacity-25 text-info px-3 py-2 rounded-pill mb-2">Target Role: Backend Developer</span>
+                    <h2 class="fw-bold text-white mb-2">Welcome, <span id="studentName">Student</span>!</h2>
+                    <div class="d-flex align-items-center gap-3">
+                        <span id="currentStageBadge" class="stage-badge">Foundation</span>
+                        <a href="/profile.html" class="btn btn-sm btn-outline-secondary text-light"><i class="bi bi-gear-fill me-1"></i>Edit Profile / Change Goal</a>
+                    </div>
+                </div>
+                <div class="col-md-4 text-end">
+                    <a href="/assessment.html" class="btn btn-pf-primary"><i class="bi bi-file-earmark-text me-2"></i>Take Assessment</a>
+                </div>
+            </div>
+            <div class="why-box mt-3">
+                <div class="why-box-title mb-1"><i class="bi bi-info-circle me-1"></i> Stage Breakdown:</div>
+                <p id="stageReasonText" class="text-light mb-0" style="white-space: pre-line;"></p>
+            </div>
+        </div>
+
+        <!-- Job Readiness & Daily Action Row -->
+        <div class="row g-4 mb-4">
+            <!-- Job Readiness Dashboard Widget -->
+            <div class="col-lg-6">
+                <div class="pf-card h-100">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h4 class="fw-bold text-white mb-0"><i class="bi bi-speedometer2 text-info me-2"></i>Job Readiness Dashboard</h4>
+                        <span id="overallMetric" class="fs-4 fw-bold text-info">0%</span>
+                    </div>
+
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between text-secondary mb-1">
+                            <span>Technical Fundamentals</span>
+                            <span id="mTech">0%</span>
+                        </div>
+                        <div class="progress progress-dark">
+                            <div id="barTech" class="progress-bar progress-bar-cyan" style="width: 0%"></div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between text-secondary mb-1">
+                            <span>DSA & Problem Solving</span>
+                            <span id="mDsa">0%</span>
+                        </div>
+                        <div class="progress progress-dark">
+                            <div id="barDsa" class="progress-bar progress-bar-indigo" style="width: 0%"></div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between text-secondary mb-1">
+                            <span>Real-World Projects</span>
+                            <span id="mProj">0%</span>
+                        </div>
+                        <div class="progress progress-dark">
+                            <div id="barProj" class="progress-bar progress-bar-emerald" style="width: 0%"></div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between text-secondary mb-1">
+                            <span>Git & Version Control</span>
+                            <span id="mGit">0%</span>
+                        </div>
+                        <div class="progress progress-dark">
+                            <div id="barGit" class="progress-bar progress-bar-amber" style="width: 0%"></div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="d-flex justify-content-between text-secondary mb-1">
+                            <span>Technical Interview Preparation</span>
+                            <span id="mInterview">0%</span>
+                        </div>
+                        <div class="progress progress-dark">
+                            <div id="barInterview" class="progress-bar progress-bar-cyan" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- "What Should I Do Today?" Widget (Requirement #12) -->
+            <div class="col-lg-6">
+                <div class="pf-card h-100">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h4 class="fw-bold text-white mb-0"><i class="bi bi-calendar-check text-warning me-2"></i>What should I do today?</h4>
+                        <a href="/roadmap.html" class="btn btn-sm btn-pf-outline">Full Roadmap</a>
+                    </div>
+                    <p class="text-secondary small mb-3">Recommended tasks based on your current personalized roadmap and skill gaps:</p>
+                    
+                    <div id="todayTasksContainer"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Skill Gap Analysis Grid -->
+        <div class="pf-card mb-4">
+            <h4 class="fw-bold text-white mb-3"><i class="bi bi-bar-chart-steps text-info me-2"></i>Skill Gap Analysis (Student vs Career Requirement)</h4>
+            <div id="skillGapContainer" class="row g-3"></div>
+        </div>
+    </div>
+
+    <script src="/js/app.js"></script>
+    <script>
+        async function loadDashboard() {
+            try {
+                // Fetch progress
+                const progress = await apiFetch('/progress');
+                document.getElementById('studentName').textContent = progress.studentName;
+                document.getElementById('targetCareerBadge').textContent = `Target Role: ${progress.targetCareer}`;
+                document.getElementById('currentStageBadge').textContent = progress.currentStage;
+                document.getElementById('stageReasonText').textContent = progress.stageReason;
+
+                document.getElementById('overallMetric').textContent = `${progress.overallProgress}%`;
+                
+                document.getElementById('mTech').textContent = `${progress.technicalSkillsProgress}%`;
+                document.getElementById('barTech').style.width = `${progress.technicalSkillsProgress}%`;
+
+                document.getElementById('mDsa').textContent = `${progress.dsaProgress}%`;
+                document.getElementById('barDsa').style.width = `${progress.dsaProgress}%`;
+
+                document.getElementById('mProj').textContent = `${progress.projectProgress}%`;
+                document.getElementById('barProj').style.width = `${progress.projectProgress}%`;
+
+                document.getElementById('mGit').textContent = `${progress.gitProgress}%`;
+                document.getElementById('barGit').style.width = `${progress.gitProgress}%`;
+
+                document.getElementById('mInterview').textContent = `${progress.interviewPrepProgress}%`;
+                document.getElementById('barInterview').style.width = `${progress.interviewPrepProgress}%`;
+
+                // Fetch Today Tasks
+                const todayTasks = await apiFetch('/roadmap/today');
+                const todayContainer = document.getElementById('todayTasksContainer');
+                if (todayTasks && todayTasks.length > 0) {
+                    todayContainer.innerHTML = todayTasks.map((t, idx) => `
+                        <div class="p-3 bg-dark rounded mb-2 border border-secondary d-flex align-items-start gap-3">
+                            <span class="badge bg-primary rounded-circle p-2">${idx + 1}</span>
+                            <div>
+                                <h6 class="fw-bold text-white mb-1">${t.title}</h6>
+                                <p class="text-secondary small mb-1">${t.description}</p>
+                                <span class="badge bg-info text-dark">${t.skillName}</span>
+                            </div>
+                        </div>
+                    `).join('');
+                } else {
+                    todayContainer.innerHTML = `<p class="text-success fw-bold"><i class="bi bi-check-circle me-1"></i> All phase tasks completed!</p>`;
+                }
+
+                // Fetch Skill Gaps
+                const gapRes = await apiFetch('/skills/gaps');
+                const gapContainer = document.getElementById('skillGapContainer');
+                gapContainer.innerHTML = gapRes.skillGaps.map(g => {
+                    let badgeClass = 'badge-needs-imp';
+                    if (g.gapStatus === 'Major Gap') badgeClass = 'badge-major-gap';
+                    else if (g.gapStatus === 'Sufficient') badgeClass = 'badge-sufficient';
+                    else if (g.gapStatus === 'Strong') badgeClass = 'badge-strong';
+
+                    return `
+                        <div class="col-md-6 col-lg-4">
+                            <div class="p-3 bg-dark rounded border border-secondary h-100">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <h6 class="fw-bold text-white mb-0">${g.skillName}</h6>
+                                    <span class="badge ${badgeClass}">${g.gapStatus}</span>
+                                </div>
+                                <div class="d-flex justify-content-between small text-secondary mb-1">
+                                    <span>Current: <strong>${g.currentScore}%</strong> (${g.currentLevel})</span>
+                                    <span>Target: <strong>${g.requiredScore}%</strong></span>
+                                </div>
+                                <div class="progress progress-dark mb-2">
+                                    <div class="progress-bar progress-bar-cyan" style="width: ${g.currentScore}%"></div>
+                                </div>
+                                <p class="text-secondary small mb-0"><i class="bi bi-lightbulb text-warning me-1"></i>${g.recommendation}</p>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+            } catch(err) {
+                console.error(err);
+            }
+        }
+
+        loadDashboard();
+    </script>
+</body>
+</html>

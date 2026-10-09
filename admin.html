@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PathForge – Platform Administration Panel</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
+        <div class="container">
+            <a class="navbar-brand" href="/"><i class="bi bi-cpu-fill me-2"></i>PATHFORGE ADMIN</a>
+            <div id="navUserContainer" class="ms-auto d-flex align-items-center"></div>
+        </div>
+    </nav>
+
+    <div class="container py-5">
+        <div class="row g-4 mb-4">
+            <div class="col-md-3">
+                <div class="pf-card text-center">
+                    <span class="text-secondary d-block">Total Registered Students</span>
+                    <h2 id="statStudents" class="fw-bold text-info mb-0">0</h2>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="pf-card text-center">
+                    <span class="text-secondary d-block">Configured Skills</span>
+                    <h2 id="statSkills" class="fw-bold text-indigo mb-0" style="color: #6366f1;">0</h2>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="pf-card text-center">
+                    <span class="text-secondary d-block">Career Roles</span>
+                    <h2 id="statCareers" class="fw-bold text-emerald mb-0" style="color: #10b981;">0</h2>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="pf-card text-center">
+                    <span class="text-secondary d-block">Real-World Projects</span>
+                    <h2 id="statProjects" class="fw-bold text-warning mb-0">0</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <!-- Add Skill Form -->
+            <div class="col-md-6">
+                <div class="pf-card">
+                    <h4 class="fw-bold text-white mb-3"><i class="bi bi-plus-circle text-info me-2"></i>Add New Skill</h4>
+                    <form id="skillForm">
+                        <div class="mb-3">
+                            <label class="form-label text-secondary">Skill Name</label>
+                            <input type="text" id="skName" class="form-control bg-dark text-light border-secondary" placeholder="e.g. Kubernetes" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label text-secondary">Category</label>
+                            <input type="text" id="skCategory" class="form-control bg-dark text-light border-secondary" placeholder="e.g. Infrastructure" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label text-secondary">Description</label>
+                            <textarea id="skDesc" class="form-control bg-dark text-light border-secondary" rows="2" placeholder="Skill details"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-pf-primary w-100">Add Skill</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Add Career Role Form -->
+            <div class="col-md-6">
+                <div class="pf-card">
+                    <h4 class="fw-bold text-white mb-3"><i class="bi bi-briefcase text-indigo me-2" style="color: #6366f1;"></i>Add Career Role</h4>
+                    <form id="careerForm">
+                        <div class="mb-3">
+                            <label class="form-label text-secondary">Role Title</label>
+                            <input type="text" id="crTitle" class="form-control bg-dark text-light border-secondary" placeholder="e.g. Cloud Engineer" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label text-secondary">Category</label>
+                            <input type="text" id="crCategory" class="form-control bg-dark text-light border-secondary" placeholder="e.g. Infrastructure" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label text-secondary">Description</label>
+                            <textarea id="crDesc" class="form-control bg-dark text-light border-secondary" rows="2" placeholder="Target role responsibilities"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-pf-primary w-100">Add Career Role</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/app.js"></script>
+    <script>
+        async function loadAdminData() {
+            try {
+                const stats = await apiFetch('/admin/stats');
+                document.getElementById('statStudents').textContent = stats.totalStudents || 0;
+                document.getElementById('statSkills').textContent = stats.totalSkills || 0;
+                document.getElementById('statCareers').textContent = stats.totalCareers || 0;
+                document.getElementById('statProjects').textContent = stats.totalProjects || 0;
+            } catch(err) {
+                console.error(err);
+            }
+        }
+
+        document.getElementById('skillForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const name = document.getElementById('skName').value;
+            const category = document.getElementById('skCategory').value;
+            const description = document.getElementById('skDesc').value;
+
+            try {
+                await apiFetch('/admin/skills', {
+                    method: 'POST',
+                    body: JSON.stringify({ name, category, description })
+                });
+                alert('Skill added successfully!');
+                location.reload();
+            } catch(err) {
+                alert(err.message);
+            }
+        });
+
+        document.getElementById('careerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const title = document.getElementById('crTitle').value;
+            const category = document.getElementById('crCategory').value;
+            const description = document.getElementById('crDesc').value;
+
+            try {
+                await apiFetch('/admin/careers', {
+                    method: 'POST',
+                    body: JSON.stringify({ title, category, description })
+                });
+                alert('Career role added successfully!');
+                location.reload();
+            } catch(err) {
+                alert(err.message);
+            }
+        });
+
+        loadAdminData();
+    </script>
+</body>
+</html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PathForge – Student Registration</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+<body class="d-flex flex-column min-vh-100">
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
+        <div class="container">
+            <a class="navbar-brand" href="/"><i class="bi bi-cpu-fill me-2"></i>PATHFORGE</a>
+            <div id="navUserContainer" class="ms-auto"></div>
+        </div>
+    </nav>
+
+    <div class="container my-auto py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="pf-card">
+                    <h3 class="fw-bold text-center text-white mb-4"><i class="bi bi-person-plus-fill me-2 text-info"></i>Create Student Account</h3>
+                    <div id="errorAlert" class="alert alert-danger d-none mb-3"></div>
+
+                    <form id="registerForm">
+                        <div class="mb-3">
+                            <label class="form-label text-secondary font-weight-bold">Full Name</label>
+                            <input type="text" id="name" class="form-control bg-dark text-light border-secondary" placeholder="e.g. Bhavya Sri" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label text-secondary font-weight-bold">Email Address</label>
+                            <input type="email" id="email" class="form-control bg-dark text-light border-secondary" placeholder="student@college.edu" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label text-secondary font-weight-bold">Password</label>
+                            <input type="password" id="password" class="form-control bg-dark text-light border-secondary" placeholder="••••••••" required>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label text-secondary font-weight-bold">Branch</label>
+                                <select id="branch" class="form-select bg-dark text-light border-secondary" required>
+                                    <option value="CSE">CSE (Computer Science)</option>
+                                    <option value="IT">IT (Information Tech)</option>
+                                    <option value="AI & ML">AI & ML</option>
+                                    <option value="Data Science">Data Science</option>
+                                    <option value="ECE">ECE</option>
+                                    <option value="EEE">EEE</option>
+                                    <option value="Other">Other Engineering Branch</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label text-secondary font-weight-bold">Year</label>
+                                <select id="year" class="form-select bg-dark text-light border-secondary" required>
+                                    <option value="1st Year">1st Year</option>
+                                    <option value="2nd Year">2nd Year</option>
+                                    <option value="3rd Year" selected>3rd Year</option>
+                                    <option value="4th Year">4th Year</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label text-secondary font-weight-bold">Semester</label>
+                            <select id="semester" class="form-select bg-dark text-light border-secondary" required>
+                                <option value="Semester 1">Semester 1</option>
+                                <option value="Semester 2">Semester 2</option>
+                                <option value="Semester 3">Semester 3</option>
+                                <option value="Semester 4">Semester 4</option>
+                                <option value="Semester 5" selected>Semester 5</option>
+                                <option value="Semester 6">Semester 6</option>
+                                <option value="Semester 7">Semester 7</option>
+                                <option value="Semester 8">Semester 8</option>
+                            </select>
+                        </div>
+
+                        <button type="submit" class="btn btn-pf-primary w-100 mb-3"><i class="bi bi-rocket-takeoff me-2"></i>Create Account & Start Guidance</button>
+                        <p class="text-center text-secondary mb-0">Already registered? <a href="/login.html" class="text-info">Login here</a></p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/app.js"></script>
+    <script>
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const branch = document.getElementById('branch').value;
+            const year = document.getElementById('year').value;
+            const semester = document.getElementById('semester').value;
+            const alert = document.getElementById('errorAlert');
+
+            try {
+                const response = await fetch('/api/auth/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, email, password, branch, year, semester })
+                });
+
+                if (!response.ok) {
+                    const err = await response.json();
+                    throw new Error(err.message || 'Registration failed');
+                }
+
+                const data = await response.json();
+                setAuthSession(data.token, { name: data.name, email: data.email, role: data.role });
+                window.location.href = '/dashboard.html';
+            } catch(err) {
+                alert.textContent = err.message;
+                alert.classList.remove('d-none');
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PathForge – Login</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+<body class="d-flex flex-column min-vh-100">
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
+        <div class="container">
+            <a class="navbar-brand" href="/"><i class="bi bi-cpu-fill me-2"></i>PATHFORGE</a>
+            <div id="navUserContainer" class="ms-auto"></div>
+        </div>
+    </nav>
+
+    <div class="container my-auto py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-5">
+                <div class="pf-card">
+                    <h3 class="fw-bold text-center text-white mb-4"><i class="bi bi-box-arrow-in-right me-2 text-info"></i>Student Login</h3>
+                    <div id="errorAlert" class="alert alert-danger d-none mb-3"></div>
+
+                    <form id="loginForm">
+                        <div class="mb-3">
+                            <label class="form-label text-secondary font-weight-bold">Email Address</label>
+                            <input type="email" id="email" class="form-control bg-dark text-light border-secondary" placeholder="student@example.com" required>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label text-secondary font-weight-bold">Password</label>
+                            <input type="password" id="password" class="form-control bg-dark text-light border-secondary" placeholder="••••••••" required>
+                        </div>
+                        <button type="submit" class="btn btn-pf-primary w-100 mb-3"><i class="bi bi-box-arrow-in-right me-2"></i>Log In</button>
+                    </form>
+
+                    <hr class="border-secondary my-4">
+
+                    <button id="quickDemoBtn" class="btn btn-outline-info w-100 mb-3"><i class="bi bi-stars me-2"></i>Quick Demo Student Login (CSE 3rd Year)</button>
+                    <p class="text-center text-secondary mb-0">Don't have an account? <a href="/register.html" class="text-info">Register here</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/app.js"></script>
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const alert = document.getElementById('errorAlert');
+            alert.classList.add('d-none');
+
+            try {
+                const response = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+
+                if (!response.ok) {
+                    const err = await response.json();
+                    throw new Error(err.message || 'Invalid login credentials');
+                }
+
+                const data = await response.json();
+                setAuthSession(data.token, { name: data.name, email: data.email, role: data.role });
+                window.location.href = data.role === 'ROLE_ADMIN' ? '/admin.html' : '/dashboard.html';
+            } catch(err) {
+                alert.textContent = err.message;
+                alert.classList.remove('d-none');
+            }
+        });
+
+        document.getElementById('quickDemoBtn').addEventListener('click', () => {
+            document.getElementById('email').value = 'demo@pathforge.com';
+            document.getElementById('password').value = 'password123';
+            document.getElementById('loginForm').dispatchEvent(new Event('submit'));
+        });
+    </script>
+</body>
+</html>

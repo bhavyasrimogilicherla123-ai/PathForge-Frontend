@@ -1,0 +1,179 @@
+/* PathForge Modern Educational Tech Theme */
+:root {
+    --bg-primary: #0f172a;
+    --bg-card: #1e293b;
+    --bg-card-hover: #334155;
+    --accent-blue: #38bdf8;
+    --accent-indigo: #6366f1;
+    --accent-emerald: #10b981;
+    --accent-amber: #f59e0b;
+    --accent-rose: #f43f5e;
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --border-color: #334155;
+    --glass-bg: rgba(30, 41, 59, 0.75);
+    --glass-border: rgba(255, 255, 255, 0.1);
+}
+
+body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Glassmorphism Navbar */
+.navbar-custom {
+    background: var(--glass-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--glass-border);
+}
+
+.navbar-brand {
+    font-weight: 800;
+    font-size: 1.4rem;
+    background: linear-gradient(135deg, var(--accent-blue), var(--accent-indigo));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.nav-link {
+    color: var(--text-secondary) !important;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.nav-link:hover, .nav-link.active {
+    color: var(--accent-blue) !important;
+}
+
+/* Cards & Glass Containers */
+.pf-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.pf-card:hover {
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+}
+
+/* Stage Badge */
+.stage-badge {
+    background: linear-gradient(135deg, #4f46e5, #06b6d4);
+    color: #ffffff;
+    font-weight: 700;
+    padding: 0.4rem 1rem;
+    border-radius: 50px;
+    display: inline-block;
+    letter-spacing: 0.5px;
+}
+
+/* Status Badges */
+.badge-major-gap { background-color: rgba(244, 63, 94, 0.2); color: #f43f5e; border: 1px solid #f43f5e; }
+.badge-needs-imp { background-color: rgba(245, 158, 11, 0.2); color: #f59e0b; border: 1px solid #f59e0b; }
+.badge-sufficient { background-color: rgba(56, 189, 248, 0.2); color: #38bdf8; border: 1px solid #38bdf8; }
+.badge-strong { background-color: rgba(16, 185, 129, 0.2); color: #10b981; border: 1px solid #10b981; }
+
+/* Custom Progress Bars */
+.progress-dark {
+    background-color: #090d16;
+    border-radius: 10px;
+    height: 10px;
+    overflow: hidden;
+}
+
+.progress-bar-cyan { background: linear-gradient(90deg, #06b6d4, #38bdf8); }
+.progress-bar-indigo { background: linear-gradient(90deg, #6366f1, #818cf8); }
+.progress-bar-emerald { background: linear-gradient(90deg, #059669, #10b981); }
+.progress-bar-amber { background: linear-gradient(90deg, #d97706, #f59e0b); }
+
+/* Why Explanation Box */
+.why-box {
+    background: rgba(99, 102, 241, 0.1);
+    border-left: 4px solid var(--accent-indigo);
+    border-radius: 6px;
+    padding: 1rem;
+    margin-top: 0.75rem;
+}
+
+.why-box-title {
+    color: var(--accent-blue);
+    font-weight: 700;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Buttons */
+.btn-pf-primary {
+    background: linear-gradient(135deg, var(--accent-blue), var(--accent-indigo));
+    border: none;
+    color: #fff;
+    font-weight: 600;
+    border-radius: 8px;
+    padding: 0.6rem 1.4rem;
+    transition: opacity 0.2s ease;
+}
+
+.btn-pf-primary:hover {
+    opacity: 0.9;
+    color: #fff;
+}
+
+.btn-pf-outline {
+    background: transparent;
+    border: 1px solid var(--accent-blue);
+    color: var(--accent-blue);
+    font-weight: 600;
+    border-radius: 8px;
+    padding: 0.6rem 1.4rem;
+}
+
+.btn-pf-outline:hover {
+    background: var(--accent-blue);
+    color: #0f172a;
+}
+
+/* Roadmap Timeline */
+.timeline-item {
+    position: relative;
+    padding-left: 2.5rem;
+    margin-bottom: 2rem;
+}
+
+.timeline-item::before {
+    content: '';
+    position: absolute;
+    left: 0.85rem;
+    top: 2rem;
+    bottom: -2rem;
+    width: 2px;
+    background: var(--border-color);
+}
+
+.timeline-item:last-child::before {
+    display: none;
+}
+
+.timeline-icon {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    background: var(--bg-card);
+    border: 2px solid var(--accent-blue);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: var(--accent-blue);
+}
