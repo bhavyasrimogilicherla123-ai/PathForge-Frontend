@@ -17,7 +17,7 @@ PathForge Frontend is a modern, responsive web application for the **PathForge**
 
 * **HTML5** & **CSS3** (Custom responsive design in `css/main.css`)
 * **Bootstrap 5.3** & **Bootstrap Icons**
-* **JavaScript (Vanilla ES6)** (`js/app.js` with `fetch` REST client integration)
+* **JavaScript (Vanilla ES6)** (`js/config.js`, `js/app.js` with `fetch` REST client integration)
 
 ## 📁 Project Directory Structure
 
@@ -26,7 +26,8 @@ PathForge-Frontend/
 ├── css/
 │   └── main.css           # Custom styling and design system
 ├── js/
-│   └── app.js             # Central REST API helper, JWT session manager & navbar setup
+│   ├── config.js          # API Base URL configuration for Localhost vs Vercel
+│   └── app.js             # Central REST API helper, error handler, JWT manager & navbar setup
 ├── index.html             # Platform Landing Page
 ├── login.html             # User Login Page
 ├── register.html          # Student Registration Page
@@ -44,21 +45,23 @@ PathForge-Frontend/
 └── README.md
 ```
 
-## ⚡ How to Run
+## ⚡ How to Run Locally
 
-1. Ensure the **PathForge Backend** REST API is running (by default at `http://localhost:8080`).
+1. Ensure the **PathForge Backend** REST API is running (at `http://localhost:8080/api`).
 2. Serve `PathForge-Frontend` using any static HTTP server or launch directly in a browser:
    * **Live Server (VS Code Extension)**: Right-click `index.html` -> *Open with Live Server*.
    * **Python HTTP Server**:
      ```bash
      python -m http.server 5500
      ```
-   * **Node `http-server`**:
-     ```bash
-     npx http-server -p 5500
-     ```
 3. Open `http://localhost:5500` or `index.html` in your browser.
 
-## 🔗 Backend API Connection
+## 🌐 Configuring API Base URL for Production (Vercel)
 
-The frontend automatically detects whether it is served standalone or alongside the backend. It directs REST calls to `http://localhost:8080/api` with JWT authorization headers stored securely in browser `localStorage`.
+Open `js/config.js` and set your deployed Render backend HTTPS URL:
+```javascript
+window.PATHFORGE_API_BASE = isLocalhost
+    ? 'http://localhost:8080/api'
+    : 'https://pathforge-backend.onrender.com/api'; // Replace with your Render URL
+```
+When deployed on Vercel, requests will automatically target your Render backend REST API securely over HTTPS.

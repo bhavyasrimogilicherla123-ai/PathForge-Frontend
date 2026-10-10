@@ -6,12 +6,12 @@
     <title>PathForge – Login</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="css/main.css">
 </head>
 <body class="d-flex flex-column min-vh-100">
     <nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
         <div class="container">
-            <a class="navbar-brand" href="/"><i class="bi bi-cpu-fill me-2"></i>PATHFORGE</a>
+            <a class="navbar-brand" href="index.html"><i class="bi bi-cpu-fill me-2"></i>PATHFORGE</a>
             <div id="navUserContainer" class="ms-auto"></div>
         </div>
     </nav>
@@ -38,13 +38,14 @@
                     <hr class="border-secondary my-4">
 
                     <button id="quickDemoBtn" class="btn btn-outline-info w-100 mb-3"><i class="bi bi-stars me-2"></i>Quick Demo Student Login (CSE 3rd Year)</button>
-                    <p class="text-center text-secondary mb-0">Don't have an account? <a href="/register.html" class="text-info">Register here</a></p>
+                    <p class="text-center text-secondary mb-0">Don't have an account? <a href="register.html" class="text-info">Register here</a></p>
                 </div>
             </div>
         </div>
     </div>
 
-    <script src="/js/app.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/app.js"></script>
     <script>
         document.getElementById('loginForm').addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -54,20 +55,13 @@
             alert.classList.add('d-none');
 
             try {
-                const response = await fetch('/api/auth/login', {
+                const data = await apiFetch('/auth/login', {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ email, password })
                 });
 
-                if (!response.ok) {
-                    const err = await response.json();
-                    throw new Error(err.message || 'Invalid login credentials');
-                }
-
-                const data = await response.json();
                 setAuthSession(data.token, { name: data.name, email: data.email, role: data.role });
-                window.location.href = data.role === 'ROLE_ADMIN' ? '/admin.html' : '/dashboard.html';
+                window.location.href = data.role === 'ROLE_ADMIN' ? 'admin.html' : 'dashboard.html';
             } catch(err) {
                 alert.textContent = err.message;
                 alert.classList.remove('d-none');
