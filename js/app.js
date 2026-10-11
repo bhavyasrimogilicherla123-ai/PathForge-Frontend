@@ -1,5 +1,6 @@
 // PathForge Central Frontend Application Script
 
+
 function getApiBaseUrl() {
     if (window.PATHFORGE_API_BASE) {
         return window.PATHFORGE_API_BASE.replace(/\/+$/, '');
@@ -11,7 +12,7 @@ function getApiBaseUrl() {
 
     return isLocalhost
         ? 'http://localhost:8080/api'
-        : 'https://pathforge-backend-1-vpr0.onrender.com/api';
+        : 'https://pathforge-backend.onrender.com/api';
 }
 
 function getToken() {
