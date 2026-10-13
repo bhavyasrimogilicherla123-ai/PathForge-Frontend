@@ -86,14 +86,22 @@
     <script>
         document.getElementById('registerForm').addEventListener('submit', async (e) => {
             e.preventDefault();
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            const originalBtnHtml = submitBtn ? submitBtn.innerHTML : '';
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
             const password = document.getElementById('password').value;
             const branch = document.getElementById('branch').value;
             const year = document.getElementById('year').value;
             const semester = document.getElementById('semester').value;
             const alert = document.getElementById('errorAlert');
             alert.classList.add('d-none');
+            alert.textContent = '';
+
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Creating Account...';
+            }
 
             try {
                 const data = await apiFetch('/auth/register', {
@@ -101,11 +109,20 @@
                     body: JSON.stringify({ name, email, password, branch, year, semester })
                 });
 
-                setAuthSession(data.token, { name: data.name, email: data.email, role: data.role });
-                window.location.href = 'dashboard.html';
+                if (data && data.token) {
+                    setAuthSession(data.token, { name: data.name, email: data.email, role: data.role });
+                    window.location.href = 'dashboard.html';
+                } else {
+                    throw new Error('Registration completed, but no authentication token was returned. Please try logging in.');
+                }
             } catch(err) {
-                alert.textContent = err.message;
+                alert.textContent = err.message || 'Registration failed. Please check your information and try again.';
                 alert.classList.remove('d-none');
+            } finally {
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = originalBtnHtml;
+                }
             }
         });
     </script>

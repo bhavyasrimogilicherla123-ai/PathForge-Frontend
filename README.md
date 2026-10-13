@@ -62,6 +62,6 @@ Open `js/config.js` and set your deployed Render backend HTTPS URL:
 ```javascript
 window.PATHFORGE_API_BASE = isLocalhost
     ? 'http://localhost:8080/api'
-    : 'https://pathforge-backend.onrender.com/api'; // Replace with your Render URL
+    : 'https://pathforge-backend-1-vpr0.onrender.com/api';
 ```
 When deployed on Vercel, requests will automatically target your Render backend REST API securely over HTTPS.

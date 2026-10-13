@@ -11,9 +11,8 @@
 
     // DEFAULT CONFIGURATION:
     // - Localhost uses local Spring Boot port 8080 (http://localhost:8080/api)
-    // - Deployed production (Vercel) uses your Render backend URL.
-    // Replace 'https://pathforge-backend.onrender.com/api' below with your actual deployed Render URL once created!
+    // - Deployed production (Vercel) uses your deployed Render backend URL.
     window.PATHFORGE_API_BASE = isLocalhost
         ? 'http://localhost:8080/api'
-        : 'https://pathforge-backend.onrender.com/api';
+        : 'https://pathforge-backend-1-vpr0.onrender.com/api';
 })();
